@@ -1,6 +1,11 @@
 package main.AmazonBestSellers;
 
 
+import static java.lang.Math.abs;
+
+import java.util.HashMap;
+import java.util.List;
+
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -17,7 +22,7 @@ public class amazonBestSellers {
 	static String bestSellers = "//div[contains(@class,'a-section')]//div[contains(@class,'rcm widget')]//div[contains(@class,'acswidget')]//h3[contains(@class,'a-spacing-mini')]//span[contains(@class,'acswidget-carousel__title') and text()='Books best sellers']";
 	static String booksByTitle (String bookTitle) {return "//div[contains(@class,'a-section')]//div[contains(@class,'rcm widget')]//div[contains(@class,'acswidget')]//div[contains(@class,'a-carousel-viewport')]//div[contains(@class,'a-box-group')]//a[contains(@class,'acs_product-title')]//span[contains(@class,'a-size-small') and title()='"+bookTitle+"']";}
 	static String booksByTitleALL = "//div[contains(@class,'a-section')]//div[contains(@class,'rcm widget')]//div[contains(@class,'acswidget')]//div[contains(@class,'a-carousel-viewport')]//div[contains(@class,'a-box-group')]//a[contains(@class,'acs_product-title')]//span[contains(@class,'a-size-small')]";
-	public static String bestSellersEntireList = "//div[contains(@class,'a-section')]//div[contains(@class,'rcm widget')]//div[contains(@class,'acswidget')]//h3[contains(@class,'a-spacing-mini')]//span[contains(@class,'acswidget-carousel__title') and text()='Books best sellers']/parent::h3/following-sibling::div//div[contains(@class,'a-carousel-viewport')]//ol[contains(@class,'a-carousel')]";
+	public static String bestSellersEntireList = "//div[contains(@class,'a-section')]//div[contains(@class,'rcm widget')]//div[contains(@class,'acswidget')]//h3[contains(@class,'a-spacing-mini')]//span[contains(@class,'acswidget-carousel__title') and text()='Books Bestsellers']/parent::h3/following-sibling::div//div[contains(@class,'a-carousel-viewport')]//ol[contains(@class,'a-carousel')]";
 	public static String bestSellersList =    bestSellersEntireList+ "//li[contains(@class,'a-carousel-card')]";
 	public static String bestSellersBooks = bestSellersList+"//div[contains(@class,'a-box-group')]//a[contains(@class,'acs_product-title')]//span[contains(@class,'a-size-small')]";
 	public static String bestSellersAuthors = bestSellersList+"//div[contains(@class,'acs_product-metadata__contributors')]";
@@ -62,6 +67,7 @@ public class amazonBestSellers {
 	}
 	
 	public static void booksAtAmazon()throws Exception{
+		Thread.sleep(2000);
 		if(!Functions.find(By.xpath(booksAtAmazon))){
 			Reporter.log("FAIL");
 			Assert.fail();
@@ -75,8 +81,29 @@ public class amazonBestSellers {
 	WebElement we = Functions.findElement(By.xpath(by));
 	String selectedValue = we.getText();
 	System.out.println(selectedValue);
-	
-	
-	
 	}
+	
+    public static List<String> getBestSellersList() throws Exception{
+        List<String> books = Functions.getValueFromElements(By.xpath(bestSellersPrice));
+        long currentTime;
+      	long endTime = System.currentTimeMillis() + abs(30)*1000;
+        int temp = 0;
+        do{
+        	currentTime = System.currentTimeMillis();
+            if(!books.isEmpty()){
+                break;
+            }else{
+                Thread.sleep(5000);
+            }
+            if(currentTime > endTime){
+            	Reporter.log("FAIL");
+    			Assert.fail();
+            }
+        }while(currentTime < endTime);
+        return books;
+        
+    }
+
+	
 }
+
