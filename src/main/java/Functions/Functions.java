@@ -1,5 +1,7 @@
 package main.Functions;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -14,6 +16,13 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+
+
+
+
+
+
+
 
 public class Functions {
 	
@@ -62,11 +71,34 @@ public class Functions {
 		public static WebElement findElement(By by) throws Exception{
 			return driver.findElement(by);
 		}
+
 		
 		public static String getValue(String by) throws Exception{
 			String valueText = findElement(By.xpath(by)).getText();
 			return valueText;
 		}
+
+
+		/**
+		 * Gets the value of the specified attribute for the list of elements
+		 * @param by                 the XPath to the list of elements
+		 * @param attribute          the attribute from which to get the value
+		 * @return                   the list of attribute's value
+		 * @throws Exception
+		 */
+		public static List<String>getValueFromElements(By by) throws Exception {
+				List<String> valueList = new ArrayList<String>();
+				if(find(by)){
+					for (WebElement element : driver.findElements(by)) {
+					//	if (attribute.equalsIgnoreCase("text")) 
+							valueList.add(element.getText());
+						//else
+							//valueList.add(element.getAttribute(attribute));
+					}
+				}
+				return valueList;
+			}
 }
+
 
 
