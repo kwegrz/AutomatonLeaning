@@ -30,6 +30,8 @@ public class amazonTest {
 		amazonBestSellers.booksAtAmazon();
 	//	amazonBestSellers.bestSellersList();
 		
+		//RUNIKA HELP!
+		// trying to iterate over list to get all the items but not working. Not sure how to do it.
 		Map<String, String> objMap = new HashMap<String, String>();
 		//objMap.put("Book", Functions.getValue(amazonBestSellers.bestSellersList));
 		objMap.put("Title", Functions.getValue(amazonBestSellers.bestSellersBooks));
