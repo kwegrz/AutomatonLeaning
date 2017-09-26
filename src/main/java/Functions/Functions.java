@@ -1,27 +1,16 @@
-package main.Functions;
+package Functions;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.InvalidSelectorException;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.UnhandledAlertException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-
-
-
-
-
-
+import org.testng.Reporter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class Functions {
@@ -31,8 +20,8 @@ public class Functions {
 		public void hoverAndClick(By by) {
 			Actions action = new Actions(driver);
 			action.moveToElement(driver.findElement(by)).click(driver.findElement(by)).build().perform();
-		
-	}	
+
+	}
 		
 		public static void hover(By by) {
 		Actions action = new Actions(driver);
@@ -63,10 +52,11 @@ public class Functions {
 			}
 			return exists;
 		}
-		
-		public static void waitUntilPresent(long timeoutInSeconds, By xPath) throws TimeoutException {
-			new WebDriverWait(driver, timeoutInSeconds).until(ExpectedConditions.visibilityOfElementLocated(xPath));
-		}
+
+	public static void waitUntilPresent(long timeoutInSeconds, By xPath) throws TimeoutException {
+		new WebDriverWait(driver, timeoutInSeconds).until(ExpectedConditions.visibilityOfElementLocated(xPath));
+	}
+
 		
 		public static WebElement findElement(By by) throws Exception{
 			return driver.findElement(by);
@@ -79,10 +69,32 @@ public class Functions {
 		}
 
 
-		/**
+	/**
+	 * Scrolls to the page element
+	 *
+	 * @param by
+	 *            the XPath to the element
+	 * @throws Exception
+	 */
+	public static void scroll(By by) throws Exception {
+		try {
+			WebElement target = driver.findElement(by);
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", target);
+			Thread.sleep(200);
+			Reporter.log("scroll to element");
+		} catch (StaleElementReferenceException e) {
+
+		} catch (Exception | Error e) {
+			System.out.println("Cannot find item");
+			Reporter.log("FAIL");
+			Assert.fail();
+		}
+	}
+
+	/**
 		 * Gets the value of the specified attribute for the list of elements
 		 * @param by                 the XPath to the list of elements
-		 * @param attribute          the attribute from which to get the value
+		// * @param attribute          the attribute from which to get the value
 		 * @return                   the list of attribute's value
 		 * @throws Exception
 		 */
